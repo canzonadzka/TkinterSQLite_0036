@@ -119,3 +119,5 @@ def lihat_data():
     for baris in cur.fetchall():
         tabel.insert("", tk.END, values=baris)
 
+tk.Button(root, text="Lihat Data", width=12, command=lihat_data).grid(row=5, column=1, pady=10)
+
