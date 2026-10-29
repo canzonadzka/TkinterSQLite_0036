@@ -99,5 +99,9 @@ def proses():
              "Tinggi": "red", "Sangat Tinggi": "darkred"}
     label_hasil.config(text="Risiko: " + hasil, bg=warna[hasil], fg="white")
 
+tk.Button(root, text="Prediksi", width=12, command=proses).grid(row=5, column=0, pady=10)
+
+label_hasil = tk.Label(root, text="Hasil prediksi", font=("Arial", 12, "bold"), width=30, height=2, bg="lightgray")
+label_hasil.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
 
 
