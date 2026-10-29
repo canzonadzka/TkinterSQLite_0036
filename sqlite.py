@@ -61,3 +61,28 @@ combo_riwayat.grid(row=4, column=1)
 root.mainloop()
 conn.close()
 
+# Tombol simpan dan prediksi
+def proses():
+    nama = entry_nama.get().strip()
+    usia = entry_usia.get().strip()
+    gula = entry_gula.get().strip()
+    bmi = entry_bmi.get().strip()
+    riwayat = combo_riwayat.get()
+
+    # validasi
+    if nama == "" or usia == "" or gula == "" or bmi == "" or riwayat == "":
+        messagebox.showwarning("Peringatan", "Semua data harus diisi!")
+        return
+    if not usia.isdigit() or int(usia) < 1 or int(usia) > 120:
+        messagebox.showwarning("Peringatan", "Usia harus angka 1 - 120!")
+        return
+    try:
+        gula = float(gula)
+        bmi = float(bmi)
+    except ValueError:
+        messagebox.showwarning("Peringatan", "Gula darah dan BMI harus berupa angka!")
+        return
+    if gula <= 0 or bmi <= 0:
+        messagebox.showwarning("Peringatan", "Gula darah dan BMI harus lebih dari 0!")
+        return
+
