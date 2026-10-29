@@ -15,6 +15,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS pasien (
     hasil_prediksi TEXT)""")
 conn.commit()
 
+
 # Prediksi
 def prediksi(gula, bmi, riwayat):
     if gula >= 200:
@@ -34,32 +35,6 @@ def prediksi(gula, bmi, riwayat):
             return "Waspada"
         return "Rendah"
 
-# Tampilan GUI
-root = tk.Tk()
-root.title("Prediksi Risiko Diabetes")
-
-tk.Label(root, text="Nama Pasien").grid(row=0, column=0, padx=10, pady=5, sticky="w")
-entry_nama = tk.Entry(root, width=25)
-entry_nama.grid(row=0, column=1)
-
-tk.Label(root, text="Usia").grid(row=1, column=0, padx=10, pady=5, sticky="w")
-entry_usia = tk.Entry(root, width=25)
-entry_usia.grid(row=1, column=1)
-
-tk.Label(root, text="Gula Darah (mg/dL)").grid(row=2, column=0, padx=10, pady=5, sticky="w")
-entry_gula = tk.Entry(root, width=25)
-entry_gula.grid(row=2, column=1)
-
-tk.Label(root, text="BMI").grid(row=3, column=0, padx=10, pady=5, sticky="w")
-entry_bmi = tk.Entry(root, width=25)
-entry_bmi.grid(row=3, column=1)
-
-tk.Label(root, text="Riwayat Diabetes Ortu").grid(row=4, column=0, padx=10, pady=5, sticky="w")
-combo_riwayat = ttk.Combobox(root, values=["Ya", "Tidak"], state="readonly", width=22)
-combo_riwayat.grid(row=4, column=1)
-
-root.mainloop()
-conn.close()
 
 # Tombol simpan dan prediksi
 def proses():
@@ -85,7 +60,7 @@ def proses():
     if gula <= 0 or bmi <= 0:
         messagebox.showwarning("Peringatan", "Gula darah dan BMI harus lebih dari 0!")
         return
-        
+
     hasil = prediksi(gula, bmi, riwayat)
 
     # simpan ke database
@@ -93,16 +68,11 @@ def proses():
                 (nama, int(usia), gula, bmi, riwayat, hasil))
     conn.commit()
 
-    
     # tampilkan hasil dengan warna
     warna = {"Rendah": "green", "Waspada": "gold", "Sedang": "orange",
              "Tinggi": "red", "Sangat Tinggi": "darkred"}
     label_hasil.config(text="Risiko: " + hasil, bg=warna[hasil], fg="white")
 
-tk.Button(root, text="Prediksi", width=12, command=proses).grid(row=5, column=0, pady=10)
-
-label_hasil = tk.Label(root, text="Hasil prediksi", font=("Arial", 12, "bold"), width=30, height=2, bg="lightgray")
-label_hasil.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
 
 # Tombol lihat data
 def lihat_data():
@@ -119,5 +89,36 @@ def lihat_data():
     for baris in cur.fetchall():
         tabel.insert("", tk.END, values=baris)
 
+
+# Tampilan GUI
+root = tk.Tk()
+root.title("Prediksi Risiko Diabetes")
+
+tk.Label(root, text="Nama Pasien").grid(row=0, column=0, padx=10, pady=5, sticky="w")
+entry_nama = tk.Entry(root, width=25)
+entry_nama.grid(row=0, column=1)
+
+tk.Label(root, text="Usia").grid(row=1, column=0, padx=10, pady=5, sticky="w")
+entry_usia = tk.Entry(root, width=25)
+entry_usia.grid(row=1, column=1)
+
+tk.Label(root, text="Gula Darah (mg/dL)").grid(row=2, column=0, padx=10, pady=5, sticky="w")
+entry_gula = tk.Entry(root, width=25)
+entry_gula.grid(row=2, column=1)
+
+tk.Label(root, text="BMI").grid(row=3, column=0, padx=10, pady=5, sticky="w")
+entry_bmi = tk.Entry(root, width=25)
+entry_bmi.grid(row=3, column=1)
+
+tk.Label(root, text="Riwayat Diabetes Ortu").grid(row=4, column=0, padx=10, pady=5, sticky="w")
+combo_riwayat = ttk.Combobox(root, values=["Ya", "Tidak"], state="readonly", width=22)
+combo_riwayat.grid(row=4, column=1)
+
+tk.Button(root, text="Prediksi", width=12, command=proses).grid(row=5, column=0, pady=10)
 tk.Button(root, text="Lihat Data", width=12, command=lihat_data).grid(row=5, column=1, pady=10)
 
+label_hasil = tk.Label(root, text="Hasil prediksi", font=("Arial", 12, "bold"), width=30, height=2, bg="lightgray")
+label_hasil.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+
+root.mainloop()
+conn.close()
