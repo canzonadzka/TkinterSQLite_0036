@@ -85,4 +85,13 @@ def proses():
     if gula <= 0 or bmi <= 0:
         messagebox.showwarning("Peringatan", "Gula darah dan BMI harus lebih dari 0!")
         return
+        
+    hasil = prediksi(gula, bmi, riwayat)
+
+    # simpan ke database
+    cur.execute("INSERT INTO pasien (nama_pasien, usia, gula_darah, bmi, riwayat_ortu, hasil_prediksi) VALUES (?, ?, ?, ?, ?, ?)",
+                (nama, int(usia), gula, bmi, riwayat, hasil))
+    conn.commit()
+
+
 
