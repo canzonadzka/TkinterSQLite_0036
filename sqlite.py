@@ -104,4 +104,18 @@ tk.Button(root, text="Prediksi", width=12, command=proses).grid(row=5, column=0,
 label_hasil = tk.Label(root, text="Hasil prediksi", font=("Arial", 12, "bold"), width=30, height=2, bg="lightgray")
 label_hasil.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
 
+# Tombol lihat data
+def lihat_data():
+    jendela = tk.Toplevel(root)
+    jendela.title("Riwayat Pasien")
+    kolom = ("id", "nama_pasien", "usia", "gula_darah", "bmi", "riwayat_ortu", "hasil_prediksi")
+    tabel = ttk.Treeview(jendela, columns=kolom, show="headings")
+    for k in kolom:
+        tabel.heading(k, text=k)
+        tabel.column(k, width=110)
+    tabel.pack(padx=10, pady=10)
+
+    cur.execute("SELECT * FROM pasien")
+    for baris in cur.fetchall():
+        tabel.insert("", tk.END, values=baris)
 
